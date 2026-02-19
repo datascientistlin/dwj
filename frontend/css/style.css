@@ -1,0 +1,241 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial Rounded MT Bold', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    background: linear-gradient(135deg, #ffd1dc, #a2d2ff);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+}
+
+.container {
+    width: 95%;
+    max-width: 800px;
+    height: 90vh;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow-x: hidden;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    padding: 15px 0;
+}
+
+header h1 {
+    color: #ff6b6b;
+    font-size: 1.8rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    gap: 20px;
+}
+
+.chicken-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chicken-img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.chicken-img:hover {
+    transform: scale(1.05);
+}
+
+.chicken-img.bounce {
+    animation: bounce 0.6s ease infinite alternate;
+}
+
+.chicken-img.wiggle {
+    animation: wiggle 0.5s ease infinite;
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-20px); }
+}
+
+@keyframes wiggle {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    50% { transform: rotate(0deg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.control-btn {
+    background: linear-gradient(to bottom, #4ecdc4, #44a08d);
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    min-width: 180px;
+    height: 50px;
+}
+
+.control-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.control-btn:active {
+    transform: translateY(1px);
+}
+
+.speech-bubble {
+    background-color: white;
+    border-radius: 20px;
+    padding: 15px 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 80%;
+    text-align: center;
+    margin-top: 10px;
+    border: 3px solid #ffd166;
+}
+
+.speech-bubble p {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 0;
+}
+
+footer {
+    text-align: center;
+    padding: 15px 0;
+    color: #666;
+    font-size: 1rem;
+}
+
+/* 动画类 */
+.talk-animation {
+    animation: pulse 0.5s ease infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+}
+
+.eye-blink {
+    animation: blink 0.3s ease 3;
+}
+
+@keyframes blink {
+    0%, 40%, 50%, 60%, 100% { transform: scaleY(1); }
+    45%, 55% { transform: scaleY(0.1); }
+}
+
+/* Microphone button specific styles */
+.mic-controls {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.mic-btn {
+    background: linear-gradient(to bottom, #ff6b6b, #ff5252);
+    min-width: 250px;
+    font-size: 1.2rem;
+    padding: 18px 30px;
+}
+
+.mic-btn:active {
+    background: linear-gradient(to bottom, #ff5252, #e53e3e);
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 98%;
+        height: 95vh;
+        padding: 10px;
+    }
+
+    header h1 {
+        font-size: 1.4rem;
+    }
+
+    .chicken-container {
+        width: 200px;
+        height: 200px;
+    }
+
+    .control-btn {
+        padding: 12px 20px;
+        font-size: 1rem;
+        min-width: 150px;
+        height: 45px;
+    }
+
+    .speech-bubble {
+        max-width: 95%;
+        padding: 12px 20px;
+    }
+
+    .speech-bubble p {
+        font-size: 1rem;
+    }
+}
+
+.chat-log {
+  width: 100%;
+  max-height: 180px;
+  overflow-y: auto;
+  background: #fff8e1;
+  border-radius: 12px;
+  padding: 10px;
+  font-size: 0.95rem;
+}
+
+.chat-log .user {
+  text-align: right;
+  color: #555;
+  margin: 6px 0;
+}
+
+.chat-log .assistant {
+  text-align: left;
+  color: #ff6b6b;
+  margin: 6px 0;
+}

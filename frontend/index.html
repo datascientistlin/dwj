@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大湾鸡互动陪伴</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>欢迎来到大湾鸡的世界！</h1>
+        </header>
+
+        <main>
+            <div class="chicken-container">
+                <img id="chicken-img" src="img/Front.jpeg" alt="大湾鸡" class="chicken-img">
+            </div>
+
+            <div class="controls">
+                <button id="talk-btn" class="control-btn">跟大湾鸡说话</button>
+                <button id="animate-btn" class="control-btn">让大湾鸡动起来</button>
+                <button id="switch-view-btn" class="control-btn">换角度看大湾鸡</button>
+            </div>
+
+            <div class="speech-bubble" id="speech-bubble">
+                <p id="speech-text">你好！我是大湾鸡，很高兴见到你！</p>
+            </div>
+
+            <div id="chat-log" class="chat-log"></div>
+
+            <div class="mic-controls">
+                <button id="mic-btn" class="control-btn mic-btn">
+                    🎤 按住和大湾鸡说话
+                </button>
+            </div>
+        </main>
+
+        <footer>
+            <p>与大湾鸡一起快乐玩耍吧！</p>
+        </footer>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
