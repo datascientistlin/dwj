@@ -20,7 +20,18 @@ export function startConversation(wsClient) {
   console.log("Creating new ASR connection for WebSocket client with ID:", clientId);
 
   // 保存原始的onText回调函数
-  const asrWS = createASRConnection(async userText => {
+  const asrWS = createASRConnection(async (asrResult) => {
+    // Handle both old and new formats of ASR result
+    let userText;
+
+    if (typeof asrResult === 'object' && asrResult.text !== undefined) {
+      // New format with utterance ID
+      userText = asrResult.text;
+    } else {
+      // Old format for backward compatibility
+      userText = asrResult;
+    }
+
     console.log("ASR回调函数被调用，接收到文本:", userText);
 
     // 确保WebSocket客户端对象存在

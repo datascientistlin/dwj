@@ -14,6 +14,9 @@ const clientStates = new Map();
 // 用于跟踪每个客户端的最后AI回复时间和内容，以防止重复
 const lastAIReplyInfo = new Map();
 
+// Track the current utterance ID to prevent duplicate processing
+const clientCurrentUtteranceIds = new Map();
+
 const wss = new WebSocketServer({ port: 3001 });
 
 wss.on("connection", client => {
@@ -32,10 +35,20 @@ wss.on("connection", client => {
     lastProcessedText: "", // Track the last processed text to detect repetition/continuation
     lastProcessedTime: Date.now(), // Track the last processed time for better duplicate detection
     asrProcessingLock: false, // Lock to prevent duplicate processing of the same ASR result
+    currentUtteranceId: null // Track the current utterance ID to prevent duplicate processing
   };
 
   // Store client state
   clientStates.set(clientState.id, clientState);
+
+  // Add readiness tracking for ASR connection state
+  let asrReadyState = {
+    ready: false,
+    lastChecked: Date.now()
+  };
+
+  // Initialize current utterance ID tracker for this client
+  clientCurrentUtteranceIds.set(clientState.id, null);
 
   // Initialize ASR session with proper state tracking and optimized connection handling
   const initializeASRSession = () => {
@@ -45,8 +58,31 @@ wss.on("connection", client => {
     }
     const history = clientHistories.get(clientState.id);
 
-    clientState.asrSession = createASRConnection(async userText => {
-      console.log("ASR回调函数被调用，接收到文本:", userText);
+    clientState.asrSession = createASRConnection(async (asrResult) => {
+      // Handle both old and new formats of ASR result
+      let userText, utteranceId;
+
+      if (typeof asrResult === 'object' && asrResult.text !== undefined) {
+        // New format with utterance ID
+        userText = asrResult.text;
+        utteranceId = asrResult.utteranceId;
+      } else {
+        // Old format for backward compatibility
+        userText = asrResult;
+        utteranceId = Date.now() + Math.random();
+      }
+
+      console.log("ASR回调函数被调用，接收到文本:", userText, "Utterance ID:", utteranceId);
+
+      // Verify utterance ID to prevent duplicate processing
+      const previousUtteranceId = clientCurrentUtteranceIds.get(clientState.id);
+      if (previousUtteranceId && previousUtteranceId === utteranceId) {
+        console.log('检测到重复的utterance ID，跳过处理:', userText);
+        return;
+      }
+
+      // Update the current utterance ID
+      clientCurrentUtteranceIds.set(clientState.id, utteranceId);
 
       // 确保WebSocket客户端对象存在
       if (!client) {
@@ -195,6 +231,9 @@ wss.on("connection", client => {
 
           console.log('【DEBUG-CONV】从AI模型收到的回复:', reply);
 
+          // Add AI response to conversation history for continuity
+          history.push({ role: "assistant", content: reply });
+
           // 检查是否在短时间内收到了相同的AI回复（防止ASR被重复触发）
           const now = Date.now();
           const clientLastReply = lastAIReplyInfo.get(clientState.id);
@@ -264,11 +303,14 @@ wss.on("connection", client => {
 
     // 为ASR连接添加连接丢失处理
     clientState.asrSession.onConnectionLost = () => {
-      console.log('ASR连接丢失，正在重新创建连接...');
+      console.log('ASR连接丢失，正在快速重新创建连接...');
+
+      // 立即标记ASR为未就绪状态
+      clientState.asrReady = false;
 
       // 优化重连逻辑：仅在客户端仍连接时重连
       if (client.readyState === client.OPEN) {
-        // 避免立即重连，等待一点时间
+        // 快速重连，减少延迟以支持快速连续交互
         setTimeout(() => {
           // 检查客户端是否仍然连接
           if (client.readyState === client.OPEN) {
@@ -276,7 +318,7 @@ wss.on("connection", client => {
           } else {
             console.log('客户端WebSocket已关闭，不再重连ASR');
           }
-        }, 500); // 减少重连延迟
+        }, 100); // 进一步减少重连延迟至100ms
       } else {
         console.log('客户端WebSocket已关闭，不再重连ASR');
       }
@@ -292,8 +334,13 @@ wss.on("connection", client => {
   const processMessageQueue = () => {
     if (!clientState.asrSession || !clientState.asrSession.isReady || !clientState.asrSession.isReady()) {
       console.log('ASR not ready, keeping messages queued');
+      asrReadyState.ready = false;
       return;
     }
+
+    // Mark as ready when connection is established
+    asrReadyState.ready = true;
+    asrReadyState.lastChecked = Date.now();
 
     // Process all queued messages
     while (clientState.messageQueue.length > 0) {
@@ -333,10 +380,6 @@ wss.on("connection", client => {
           console.log('Sending end signal to ASR session');
           clientState.asrSession.sendEndSignal();
 
-          // Also clear any accumulated text in the ASR session to prevent carryover
-          if (clientState.asrSession.clearAccumulatedText) {
-            clientState.asrSession.clearAccumulatedText();
-          }
         } else {
           console.warn('ASR session not available when user done speaking');
         }
@@ -358,8 +401,13 @@ wss.on("connection", client => {
         clientState.asrSession.isReady()) {
       // Forward audio data to ASR immediately if ready
       forwardToASR(data);
+    } else if (clientState.asrSession &&
+               typeof clientState.asrSession.startNewTask === 'function' &&
+               clientState.asrSession.startNewTask()) {
+      // Task started/restarted successfully, now forward audio
+      forwardToASR(data);
     } else {
-      // Queue the message if ASR is not ready
+      // Queue the message if ASR is not ready and can't be restarted
       console.log('ASR not ready, queuing audio message');
       clientState.messageQueue.push(data);
 
@@ -367,7 +415,8 @@ wss.on("connection", client => {
       const readyChecker = setInterval(() => {
         if (clientState.asrSession &&
             typeof clientState.asrSession.isReady === 'function' &&
-            clientState.asrSession.isReady()) {
+            clientState.asrSession.isReady() &&
+            asrReadyState.ready) {  // Only proceed if ASR is really ready according to our tracking
           processMessageQueue();
           clearInterval(readyChecker);
         }

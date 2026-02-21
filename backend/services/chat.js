@@ -24,13 +24,9 @@ export async function qwenChat(history) {
     }
   }
 
-  // 限制历史记录长度以避免超出API限制
-  // 保留系统消息和最近的对话，最多保留10条消息（5轮对话）
-  let limitedHistory = [...history];
-  if (limitedHistory.length > 10) {
-    // 保留最新的10条消息，包括最新的用户消息
-    limitedHistory = limitedHistory.slice(-10);
-  }
+  // 使用传入的完整历史记录，不再进行额外切片
+  // ws-server.js 负责管理历史记录的长度
+  const currentHistory = [...history];
 
   // 调试信息：显示输入到模型的完整消息历史
   console.log('【DEBUG】发送到Chat模型的输入:');
@@ -43,7 +39,7 @@ export async function qwenChat(history) {
 - 如果孩子提出不适宜的话题，请温和地引导到安全话题
 - 重点回应孩子最新的一句话，不要重复之前说过的内容
               `.trim());
-  console.log('用户输入历史:', limitedHistory);
+  console.log('用户输入历史:', currentHistory);
 
   const res = await fetch(
     `${config.dashscope.baseUrl}/api/v1/services/aigc/text-generation/generation`,
@@ -69,7 +65,7 @@ export async function qwenChat(history) {
 - 重点回应孩子最新的一句话，不要重复之前说过的内容
               `.trim()
             },
-            ...limitedHistory
+            ...currentHistory
           ]
         }
       })
