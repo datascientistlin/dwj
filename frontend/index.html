@@ -7,38 +7,54 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <!-- 装饰元素容器 -->
+    <div class="decoration-dots">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+    </div>
+
     <div class="container">
+        <!-- 欢迎标题 -->
         <header>
             <h1>欢迎来到大湾鸡的世界！</h1>
         </header>
 
         <main>
+            <!-- 大湾鸡图片 - 点击触发体育互动 -->
             <div class="chicken-container">
                 <img id="chicken-img" src="assets/images/Front.jpeg" alt="大湾鸡" class="chicken-img">
             </div>
 
+            <!-- 对话气泡/聊天记录 -->
             <div class="speech-bubble" id="speech-bubble">
                 <p id="speech-text">你好！我是大湾鸡，很高兴见到你！</p>
             </div>
 
             <div id="chat-log" class="chat-log"></div>
 
-            <!-- Consolidated Controls -->
-            <div class="consolidated-controls">
-                <div class="voice-interaction-section">
-                    <button id="voice-interact-btn" class="control-btn voice-interact-btn">
-                        <span class="btn-icon">🎤</span> 语音互动
-                    </button>
-                    <div class="asr-status-display">
-                        <span class="status-indicator" id="asr-status-indicator"></span>
-                        <span class="status-text" id="asr-status-text">状态：未知</span>
-                    </div>
+            <!-- 语音按钮 - 底部居中 -->
+            <div class="voice-section">
+                <div class="asr-status-display">
+                    <span class="status-indicator" id="asr-status-indicator"></span>
+                    <span class="status-text" id="asr-status-text">等待连接...</span>
                 </div>
+                <button id="voice-btn" class="voice-btn">🎤</button>
+                <span id="voice-btn-text" class="voice-btn-text">按住说话</span>
             </div>
         </main>
 
         <footer>
-            <p>与大湾鸡一起快乐玩耍吧！</p>
+            <p>点击大湾鸡一起运动吧！</p>
         </footer>
     </div>
 

@@ -1,3 +1,4 @@
+/* 糖果色系简单垂直布局样式 */
 * {
     margin: 0;
     padding: 0;
@@ -5,66 +6,239 @@
 }
 
 body {
-    font-family: 'Arial Rounded MT Bold', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-    background: linear-gradient(135deg, #ffd1dc, #a2d2ff);
+    font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', 'YouYuan', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+    /* 柔和的粉色到浅蓝色渐变背景 */
+    background: linear-gradient(180deg, #FFE5EC 0%, #E8F4FD 50%, #E0F4FF 100%);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #333;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 装饰元素 - 漂浮的彩色圆点 */
+.decoration-dots {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.dot {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: float 6s ease-in-out infinite;
+}
+
+.dot:nth-child(1) {
+    width: 30px;
+    height: 30px;
+    background: #FFB6C1;
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.dot:nth-child(2) {
+    width: 20px;
+    height: 20px;
+    background: #B4E7CE;
+    top: 20%;
+    left: 80%;
+    animation-delay: 1s;
+}
+
+.dot:nth-child(3) {
+    width: 25px;
+    height: 25px;
+    background: #FFE082;
+    top: 60%;
+    left: 5%;
+    animation-delay: 2s;
+}
+
+.dot:nth-child(4) {
+    width: 15px;
+    height: 15px;
+    background: #B39DDB;
+    top: 80%;
+    left: 85%;
+    animation-delay: 0.5s;
+}
+
+.dot:nth-child(5) {
+    width: 35px;
+    height: 35px;
+    background: #F8BBD9;
+    top: 40%;
+    left: 90%;
+    animation-delay: 1.5s;
+}
+
+.dot:nth-child(6) {
+    width: 18px;
+    height: 18px;
+    background: #81D4FA;
+    top: 5%;
+    left: 50%;
+    animation-delay: 2.5s;
+}
+
+.dot:nth-child(7) {
+    width: 22px;
+    height: 22px;
+    background: #A5D6A7;
+    top: 70%;
+    left: 15%;
+    animation-delay: 3s;
+}
+
+.dot:nth-child(8) {
+    width: 28px;
+    height: 28px;
+    background: #FFAB91;
+    top: 30%;
+    left: 3%;
+    animation-delay: 3.5s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+    }
+    25% {
+        transform: translateY(-20px) translateX(10px);
+    }
+    50% {
+        transform: translateY(-10px) translateX(-5px);
+    }
+    75% {
+        transform: translateY(-25px) translateX(5px);
+    }
+}
+
+/* 星星装饰 */
+.star {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #FFD700;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    animation: twinkle 2s ease-in-out infinite;
+}
+
+.star:nth-child(9) {
+    top: 15%;
+    left: 25%;
+    animation-delay: 0.3s;
+}
+
+.star:nth-child(10) {
+    top: 25%;
+    left: 70%;
+    animation-delay: 0.8s;
+    transform: scale(0.7);
+}
+
+.star:nth-child(11) {
+    top: 55%;
+    left: 88%;
+    animation-delay: 1.3s;
+    transform: scale(0.5);
+}
+
+.star:nth-child(12) {
+    top: 75%;
+    left: 30%;
+    animation-delay: 1.8s;
+    transform: scale(0.6);
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(0.8) rotate(0deg);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2) rotate(180deg);
+    }
 }
 
 .container {
     width: 95%;
-    max-width: 800px;
-    height: 90vh;
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 30px;
+    box-shadow: 0 15px 40px rgba(255, 107, 157, 0.2);
     overflow-x: hidden;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 25px;
+    position: relative;
+    z-index: 1;
 }
 
+/* 标题区域 */
 header {
     text-align: center;
-    padding: 15px 0;
+    padding: 10px 0 20px;
 }
 
 header h1 {
-    color: #ff6b6b;
+    /* 糖果粉标题色 */
+    color: #FF6B9D;
     font-size: 1.8rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    text-shadow: 2px 2px 4px rgba(255, 107, 157, 0.3);
+    letter-spacing: 2px;
 }
 
+/* 主内容区 - 简单垂直布局 */
 main {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 10px;
     gap: 20px;
 }
 
+/* 大湾鸡图片容器 */
 .chicken-container {
     position: relative;
-    width: 300px;
-    height: 300px;
+    width: 250px;
+    height: 250px;
     display: flex;
     justify-content: center;
     align-items: center;
+    /* 可爱边框和阴影 */
+    border: 5px solid #FFB6C1;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFF5F7 0%, #FFF9FB 100%);
+    box-shadow: 0 8px 25px rgba(255, 107, 157, 0.3);
+    transition: all 0.3s ease;
+}
+
+.chicken-container:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 35px rgba(255, 107, 157, 0.4);
 }
 
 .chicken-img {
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 10px;
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 50%;
     transition: transform 0.3s ease, opacity 0.3s ease;
     cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .chicken-img:hover {
@@ -79,9 +253,10 @@ main {
     animation: wiggle 0.5s ease infinite;
 }
 
+/* 跳动动画 */
 @keyframes bounce {
-    from { transform: translateY(0); }
-    to { transform: translateY(-20px); }
+    from { transform: translateY(0) scale(1); }
+    to { transform: translateY(-15px) scale(1.05); }
 }
 
 @keyframes wiggle {
@@ -92,59 +267,145 @@ main {
     100% { transform: rotate(0deg); }
 }
 
-.controls {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.control-btn {
-    background: linear-gradient(to bottom, #4ecdc4, #44a08d);
-    color: white;
-    border: none;
-    padding: 15px 25px;
-    border-radius: 50px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    min-width: 180px;
-    height: 50px;
-}
-
-.control-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.control-btn:active {
-    transform: translateY(1px);
-}
-
+/* 对话气泡 */
 .speech-bubble {
-    background-color: white;
-    border-radius: 20px;
-    padding: 15px 25px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 80%;
+    /* 奶白色带彩色边框 */
+    background-color: #FFFEF0;
+    border-radius: 25px;
+    padding: 18px 28px;
+    box-shadow: 0 4px 15px rgba(255, 182, 193, 0.4);
+    max-width: 90%;
     text-align: center;
-    margin-top: 10px;
-    border: 3px solid #ffd166;
+    border: 3px solid #B4E7CE;
+    width: 100%;
 }
 
 .speech-bubble p {
-    font-size: 1.2rem;
-    color: #333;
+    font-size: 1.15rem;
+    color: #555;
     margin: 0;
+    line-height: 1.5;
 }
 
+/* 聊天记录区域 */
+#chat-log {
+    width: 100%;
+    max-height: 150px;
+    overflow-y: auto;
+    background: #FFFEF0;
+    border-radius: 15px;
+    padding: 12px;
+    font-size: 0.95rem;
+    border: 2px solid #FFE082;
+}
+
+#chat-log .user {
+    text-align: right;
+    color: #7ED6A3;
+    margin: 6px 0;
+    font-weight: bold;
+}
+
+#chat-log .assistant {
+    text-align: left;
+    color: #FF6B9D;
+    margin: 6px 0;
+    font-weight: bold;
+}
+
+/* 底部语音按钮区域 */
+.voice-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.asr-status-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #ccc;
+}
+
+.status-indicator.connected {
+    background-color: #7ED6A3;
+}
+
+.status-indicator.connecting {
+    background-color: #FFE082;
+    animation: pulse 1.5s infinite;
+}
+
+.status-indicator.disconnected {
+    background-color: #FF8A80;
+}
+
+/* 超大圆形语音按钮 - 80px直径 */
+.voice-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: none;
+    /* 糖果绿带渐变 */
+    background: linear-gradient(135deg, #7ED6A3 0%, #56AB91 100%);
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(126, 214, 163, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.voice-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(126, 214, 163, 0.6);
+}
+
+.voice-btn:active {
+    transform: scale(0.95);
+}
+
+.voice-btn.recording {
+    background: linear-gradient(135deg, #FF8A80 0%, #FF5252 100%);
+    animation: pulse-btn 1s infinite;
+    box-shadow: 0 6px 20px rgba(255, 82, 82, 0.5);
+}
+
+@keyframes pulse-btn {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.08);
+    }
+}
+
+.voice-btn-text {
+    font-size: 0.8rem;
+    margin-top: 8px;
+    color: #666;
+}
+
+/* 底部提示 */
 footer {
     text-align: center;
-    padding: 15px 0;
-    color: #666;
-    font-size: 1rem;
+    padding: 15px 0 5px;
+    color: #999;
+    font-size: 0.9rem;
 }
 
 /* 动画类 */
@@ -166,89 +427,17 @@ footer {
     45%, 55% { transform: scaleY(0.1); }
 }
 
-/* Consolidated Controls Layout */
-.consolidated-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-    margin: 20px 0;
-}
-
-.voice-interaction-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.voice-interaction-section {
-    margin-bottom: 10px;
-}
-
-.asr-status-display {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9rem;
-    color: #555;
-}
-
-.status-indicator {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: #ccc; /* 默认灰色 */
-}
-
-.status-indicator.connected {
-    background-color: #4CAF50; /* 绿色 - 已连接 */
-}
-
-.status-indicator.connecting {
-    background-color: #FFC107; /* 黄色 - 连接中 */
-    animation: pulse 1.5s infinite;
-}
-
-.status-indicator.disconnected {
-    background-color: #F44336; /* 红色 - 已断开 */
-}
-
-.voice-interact-btn.recording {
-    background: linear-gradient(to bottom, #ff5252, #e53e3e);
-    animation: pulse-background 1s infinite;
-}
-
-@keyframes pulse-background {
-    0% { opacity: 1; }
-    50% { opacity: 0.85; }
-    100% { opacity: 1; }
-}
-
-.voice-interact-btn, .image-interact-btn {
-    min-width: 220px;
-    font-size: 1.2rem;
-    padding: 18px 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.btn-icon {
-    font-size: 1.3rem;
-}
-
+/* 移动端响应式 */
 @media (max-width: 600px) {
     .container {
         width: 98%;
         height: 95vh;
-        padding: 10px;
+        padding: 15px;
+        border-radius: 25px;
     }
 
     header h1 {
-        font-size: 1.4rem;
+        font-size: 1.5rem;
     }
 
     .chicken-container {
@@ -256,41 +445,31 @@ footer {
         height: 200px;
     }
 
-    .control-btn {
-        padding: 12px 20px;
-        font-size: 1rem;
-        min-width: 150px;
-        height: 45px;
+    .chicken-container:hover {
+        transform: scale(1.02);
     }
 
     .speech-bubble {
-        max-width: 95%;
-        padding: 12px 20px;
+        padding: 14px 20px;
     }
 
     .speech-bubble p {
         font-size: 1rem;
     }
-}
 
-.chat-log {
-  width: 100%;
-  max-height: 300px;
-  overflow-y: auto;
-  background: #fff8e1;
-  border-radius: 12px;
-  padding: 10px;
-  font-size: 0.95rem;
-}
+    #chat-log {
+        max-height: 120px;
+        padding: 10px;
+    }
 
-.chat-log .user {
-  text-align: right;
-  color: #555;
-  margin: 6px 0;
-}
+    .voice-btn {
+        width: 70px;
+        height: 70px;
+        font-size: 1.8rem;
+    }
 
-.chat-log .assistant {
-  text-align: left;
-  color: #ff6b6b;
-  margin: 6px 0;
+    /* 移动端隐藏小装饰 */
+    .dot, .star {
+        opacity: 0.4;
+    }
 }
