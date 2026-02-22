@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently -k -r \"npm run backend:dev\" \"npm run ws:dev\" \"npm run frontend:dev\"",
+    "start": "node server.js",
+    "dev": "nodemon --config nodemon.json server.js",
     "backend:dev": "nodemon --config nodemon.json backend/server.js",
     "ws:dev": "nodemon --config nodemon.json backend/services/ws-server.js",
     "frontend:dev": "http-server frontend -p 8000 -c-1",

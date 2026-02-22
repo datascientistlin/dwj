@@ -8,12 +8,23 @@ import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
+// Debug: Check if API key is loaded
+console.log('🔑 API Key loaded:', process.env.DASHSCOPE_API_KEY ? 'YES (length: ' + process.env.DASHSCOPE_API_KEY.length + ')' : 'NO');
+
 import chatRoutes from './routes/chatRoutes.js';
 import logger from './utils/logger.js';
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Serve static files from frontend directory
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
+
+// Serve index.html for root path
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
+});
 
 // Use the chat routes
 app.use('/api', chatRoutes);

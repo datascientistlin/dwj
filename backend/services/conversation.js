@@ -4,8 +4,18 @@
  */
 
 import fetch from "node-fetch";
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import config from "../config/appConfig.js";
 import logger from "../utils/logger.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Load .env file in development (local), skip in production (Railway provides env vars directly)
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
+}
 
 /**
  * 通义千问 AI 对话函数
@@ -43,7 +53,7 @@ export async function qwenChat(history) {
     {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${config.dashscope.apiKey}`,
+        Authorization: `Bearer ${process.env.DASHSCOPE_API_KEY}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
