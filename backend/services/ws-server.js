@@ -289,7 +289,7 @@ wss.on("connection", client => {
             logger.info('TTS转换成功，已发送语音回复', { reply });
           }
         } catch (error) {
-          logger.error('AI回复处理失败', { error, reply: reply || 'N/A' });
+          logger.error('AI回复处理失败', { error });
 
           // 尝试发送错误消息到前端（如果连接可用）
           await checkAndSendMessage(client, {

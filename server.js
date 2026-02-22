@@ -15,6 +15,10 @@ if (process.env.NODE_ENV !== 'production') {
   dotenv.config({ path: path.resolve(__dirname, 'backend/.env') });
 }
 
+// Debug: Check if API key is loaded
+console.log('🔑 API Key loaded:', process.env.DASHSCOPE_API_KEY ? 'YES (length: ' + process.env.DASHSCOPE_API_KEY.length + ')' : 'NO');
+console.log('🔧 NODE_ENV:', process.env.NODE_ENV || 'undefined (development)');
+
 import chatRoutes from './backend/routes/chatRoutes.js';
 import { createASRConnection } from './backend/services/asr.js';
 import { qwenChat } from './backend/services/conversation.js';
@@ -307,7 +311,7 @@ wss.on("connection", client => {
             logger.info('TTS conversion successful, audio reply sent', { reply });
           }
         } catch (error) {
-          logger.error('AI reply processing failed', { error, reply: reply || 'N/A' });
+          logger.error('AI reply processing failed', { error });
 
           await checkAndSendMessage(client, {
             type: "assistant",
